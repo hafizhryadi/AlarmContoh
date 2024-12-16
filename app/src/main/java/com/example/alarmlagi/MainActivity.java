@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnTimer;
     private TimePicker timePicker;
     private int jam, menit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,26 +54,10 @@ public class MainActivity extends AppCompatActivity {
         btnTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Set Alarm" + jam + ":" + menit, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Set Alarm " + jam + ":" + menit, Toast.LENGTH_SHORT).show();
                 setTimer();
-                notification();
             }
         });
-    }
-
-    private void notification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Alarm Reminders";
-            String description = "Bangun cuyyy Kuliahhh biar pinterrrr";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-            NotificationChannel channel = new NotificationChannel("notify", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this.
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
     }
 
     private void setTimer() {
@@ -94,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 }
